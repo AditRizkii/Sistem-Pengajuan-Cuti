@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import UserLayout from "./UserLayout";
-import FormPengajuanCuti from "../components/FormPengajuanCuti";
+import DetailPengajuanCuti from "../components/DetailPengajuanCuti";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/authSlice";
 
-const FormPengajuan = ({ setFormData }) => {
+const Detail = ({ setFormData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,9 +22,9 @@ const FormPengajuan = ({ setFormData }) => {
   }, [isError, user, navigate]);
   return (
     <UserLayout>
-      <FormPengajuanCuti setFormData={setFormData} />
+      <DetailPengajuanCuti setFormData={setFormData} />
     </UserLayout>
   );
 };
 
-export default FormPengajuan;
+export default Detail;

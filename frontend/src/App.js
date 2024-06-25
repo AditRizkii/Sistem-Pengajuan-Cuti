@@ -10,6 +10,7 @@ import Forbidden from './pages/Forbidden';
 import FormPengajuan from './pages/FormPengajuan';
 import DetailPengajuanCuti from './components/DetailPengajuanCuti';
 import AddConstant from './pages/AddConstant';
+import Detail from './pages/Detail';
 
 function App() {
   const [formData, setFormData] = useState(null);
@@ -28,7 +29,7 @@ function App() {
           <Route path="/form" element={<FormPengajuan setFormData={setFormData}/>} />
           <Route
             path="/tampilkan-data-cuti"
-            element={<DetailPengajuanCuti formData={formData} />}
+            element={<Detail formData={formData} />}
           />
 
           <Route path="/forbiden" element={<Forbidden />} />

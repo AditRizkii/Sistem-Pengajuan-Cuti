@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 const FormPengajuanCuti = ({ setFormData }) => {
-  const { nama, unitKerja } = useParams();
+  const { unitKerja } = useParams();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const jumlahCutiTahunan = user && user.sisacuti;
@@ -40,6 +40,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
     masaKerja: "",
     alamatLengkap: "",
     noTelpon: "",
+    tglSurat: "",
     confirm: false,
   });
 
@@ -116,9 +117,9 @@ const FormPengajuanCuti = ({ setFormData }) => {
       formData.endDate &&
       formData.confirm &&
       formData.jabatan &&
-      formData.nip &&
       formData.masaKerja &&
       formData.alamatLengkap &&
+      formData.tglSurat &&
       formData.noTelpon
     ) {
       let newRemainingAnnualLeave = remainingAnnualLeave;
@@ -208,23 +209,23 @@ const FormPengajuanCuti = ({ setFormData }) => {
               required
             />
           </div>
-          <div className="mb-4">
+
+         {/* Tanggal Surat */}
+         <div className="mb-4">
             <label
-              htmlFor="nip"
+              htmlFor="tglSurat"
               className="block text-gray-700 font-medium mb-2"
             >
-              NIP
+              Tanggal Surat
             </label>
             <input
-              type="text"
-              id="nip"
-              name="nip"
+              type="date"
+              id="tglSurat"
+              name="tglSurat"
               className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-              value={formData.nip}
+              value={formData.tglSurat}
               onChange={handleChange}
-              pattern="\d*"
-              onKeyPress={handleNumericInput}
-              placeholder="Masukkan NIP Anda"
+              placeholder="Masukkan Tanggal Surat Anda"
               required
             />
           </div>
