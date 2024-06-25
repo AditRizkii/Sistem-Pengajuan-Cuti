@@ -13,32 +13,42 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFF",
-    padding: 20,
+    padding: 15,
+    border: "1px solid black",
   },
   section: {
     flexGrow: 1,
     marginBottom: 7,
   },
-  address: {
-    fontSize: 9,
+  anaklampiran: {
+    fontSize: 8,
     textAlign: "left",
     marginBottom: 4,
     position: "absolute",
     right: 0,
   },
+  address: {
+    fontSize: 8,
+    textAlign: "left",
+    marginBottom: 4,
+    marginRight: 10,
+    position: "absolute",
+    right: 80,
+    top: 45,
+  },
   title: {
-    fontSize: 14,
+    fontSize: 13,
     textAlign: "center",
     marginBottom: 5,
-    paddingTop: 57,
+    paddingTop: 95,
   },
   SubHeading: {
-    fontSize: 11,
+    fontSize: 10,
     textAlign: "center",
     marginBottom: 7,
   },
   catatan: {
-    fontSize: 10,
+    fontSize: 8,
     textAlign: "start",
     marginBottom: 7,
   },
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
   tableHeader: {
     backgroundColor: "#EEE",
     padding: 2,
-    fontSize: 11,
+    fontSize: 10,
     textAlign: "left",
     fontWeight: "bold",
     borderBottomWidth: 1,
@@ -76,7 +86,7 @@ const styles = StyleSheet.create({
   tableRowLabel: {
     flexBasis: "20%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
@@ -88,73 +98,73 @@ const styles = StyleSheet.create({
   tableRowValue: {
     flexBasis: "80%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
   },
   tableRowLabel2: {
     flexBasis: "80%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
   tableRowValue2: {
     flexBasis: "20%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
   },
   tableRowLabel3: {
     flexBasis: "100%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
   tableRowLabel4: {
     flexBasis: "40%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
   tableRowValue4: {
     flexBasis: "60%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
   },
   tableRowLabel55: {
     flexBasis: "30%",
     textAlign: "left",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 0,
   },
   tableRowLabel5: {
     flexBasis: "30%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 0,
   },
   tableRowValue5: {
     flexBasis: "30%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
   tableRowValue55: {
     flexBasis: "40%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
   },
   tableRowLabel6: {
     flexBasis: "100%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
@@ -162,7 +172,7 @@ const styles = StyleSheet.create({
     height: 55,
     flexBasis: "100%",
     textAlign: "left",
-    fontSize: 7,
+    fontSize: 6,
     padding: 2,
     paddingLeft: 4,
   },
@@ -170,7 +180,7 @@ const styles = StyleSheet.create({
     height: 55,
     textAlign: "center",
     justifyContent: "bottom",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingHorizontal: 5,
     textDecoration: "underline",
@@ -185,7 +195,7 @@ const styles = StyleSheet.create({
   tableRowLabel7: {
     flexBasis: "100%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
@@ -193,14 +203,14 @@ const styles = StyleSheet.create({
     height: 55,
     flexBasis: "100%",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingLeft: 4,
   },
   tableRowLabel77: {
     flexBasis: "100%",
     textAlign: "center",
-    fontSize: 7,
+    fontSize: 6,
     padding: 2,
     paddingLeft: 4,
     paddingVertical: 3,
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
     height: 55,
     textAlign: "center",
     justifyContent: "bottom",
-    fontSize: 9,
+    fontSize: 8,
     padding: 2,
     paddingHorizontal: 5,
     textDecoration: "underline",
@@ -226,16 +236,16 @@ const styles = StyleSheet.create({
     height: 15,
     textAlign: "center",
     justifyContent: "flex-end",
-    fontSize: 7,
+    fontSize: 6,
     textDecoration: "underline",
     alignItems: "flex-end",
-    marginTop: 37.5,
+    marginTop: 38.5,
     marginBottom: -5,
   },
   tableRowValue7777: {
     textAlign: "center",
     justifyContent: "flex-end",
-    fontSize: 7,
+    fontSize: 6,
     alignItems: "flex-end",
   },
   checkmark: {
@@ -245,7 +255,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SuratPengajuanCuti = ({ formData }) => {
+const SuratPengajuanCuti = ({ formData, user }) => {
   const [bulanSurat, setBulanSurat] = useState("");
   const [tahunSurat, setTahunSurat] = useState(new Date().getFullYear());
 
@@ -280,15 +290,6 @@ const SuratPengajuanCuti = ({ formData }) => {
     return new Date().getFullYear() - 2;
   };
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy = today.getFullYear();
-
-    return `${dd}/${mm}/${yyyy}`;
-  };
-
   const formatDate = (dateString) => {
     const options = { day: "numeric", month: "long", year: "numeric" };
     return new Date(dateString).toLocaleDateString("id-ID", options);
@@ -298,9 +299,17 @@ const SuratPengajuanCuti = ({ formData }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
+          {/* Anak lampiran */}
+          <View style={styles.anaklampiran}>
+            <Text>ANAK LAMPIRAN 1.b</Text>
+            <Text>PERATURAN BADAN KEPEGAWAIAN NEGARA REPUBLIK INDONESIA</Text>
+            <Text>NOMOR 24 TAHUN 2017</Text>
+            <Text>TENTANG TATA CARA PEMBERIAN CUTI PEGAWAI NEGERI SIPIL</Text>
+          </View>
+
           {/* Address */}
           <View style={styles.address}>
-            <Text>Aceh Besar, {getCurrentDate()}</Text>
+            <Text>Aceh Besar, {formData.tglSurat}</Text>
             <Text>Kepada</Text>
             <Text>Yth. Kepala Stasiun Klimatologi Aceh</Text>
             <Text>di</Text>
@@ -312,8 +321,7 @@ const SuratPengajuanCuti = ({ formData }) => {
             FORMULIR PERMINTAAN DAN PEMBERIAN CUTI
           </Text>
           <Text style={styles.SubHeading}>
-            Nomor: {formData.noSurat}/ {formData.kodeSurat} /KACB /{bulanSurat}/
-            {tahunSurat}
+            KP.05.02/{formData.noSurat}/KACB/{bulanSurat}/{tahunSurat}
           </Text>
 
           {/* Table for Data Pegawai */}
@@ -324,7 +332,7 @@ const SuratPengajuanCuti = ({ formData }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel}>Nama</Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue}>{formData.nama}</Text>
+                  <Text style={styles.tableRowValue}>{user && user.name}</Text>
                   <View style={styles.tableRowDivider} />
                 </View>
                 <View style={styles.tableRowContainer}>
@@ -344,7 +352,7 @@ const SuratPengajuanCuti = ({ formData }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel}>NIP</Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue}>{formData.nip}</Text>
+                  <Text style={styles.tableRowValue}>{user && user.nip}</Text>
                 </View>
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel}>Masa Kerja</Text>
@@ -452,7 +460,7 @@ const SuratPengajuanCuti = ({ formData }) => {
                   <Text style={styles.tableRowLabel4}>Selama</Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue4}>
-                    {formData.leaveDays} Hari
+                    {formData.leaveDays} Hari Kerja
                   </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
@@ -626,7 +634,9 @@ const SuratPengajuanCuti = ({ formData }) => {
                 </View>
 
                 <View style={styles.tableRowContainer}>
-                  <Text style={styles.tableRowValue7}></Text>
+                  <Text style={styles.tableRowValue7}>
+                    <Image src={checkmarkImage} style={styles.checkmark} />
+                  </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
               </View>
@@ -697,7 +707,10 @@ const SuratPengajuanCuti = ({ formData }) => {
                 </View>
 
                 <View style={styles.tableRowContainer}>
-                  <Text style={styles.tableRowValue7}></Text>
+                  <Text style={styles.tableRowValue7}>
+                    {" "}
+                    <Image src={checkmarkImage} style={styles.checkmark} />
+                  </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
               </View>

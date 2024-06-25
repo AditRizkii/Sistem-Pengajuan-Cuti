@@ -4,14 +4,15 @@ import { BlobProvider } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoPrintOutline, IoDownloadOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";  
 
 const DetailPengajuanCuti = () => {
   const { state } = useLocation();
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [formData] = useState(
     state?.formData || JSON.parse(localStorage.getItem("formData"))
   );
-  const [kodeSurat, setKodeSurat] = useState(155);
 
   useEffect(() => {
     if (state?.formData) {
@@ -39,26 +40,25 @@ const DetailPengajuanCuti = () => {
     navigate("/", { state: { updatedFormData } });
   };
 
-  const incrementKodeSurat = () => {
-    setKodeSurat((prevKodeSurat) => prevKodeSurat + 1);
-  };
-
   return (
     <div className="bg-gray-100 min-h-screen font-Poppins my-auto">
-      <h1 className="text-3xl font-bold text-center mb-8 pt-8">
+      <h1 className="text-3xl font-bold text-center mb-8 pt-8 mt-8">
         Detail Pengajuan Cuti
       </h1>
       <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-4">
           {/* Menampilkan data pengajuan cuti */}
           <p className="text-lg font-semibold mb-2">Nama:</p>
-          <p className="mb-4">{formData.nama}</p>
+          <p className="mb-4">{user && user.name}</p>
 
           <p className="text-lg font-semibold mb-2">NIP:</p>
-          <p className="mb-4">{formData.nip}</p>
+          <p className="mb-4">{user && user.nip}</p>
 
           <p className="text-lg font-semibold mb-2">No Surat:</p>
           <p className="mb-4">{formData.noSurat}</p>
+
+          <p className="text-lg font-semibold mb-2">Tanggal Surat:</p>
+          <p className="mb-4">{formData.tglSurat}</p>
 
           <p className="text-lg font-semibold mb-2">Jabatan:</p>
           <p className="mb-4">{formData.jabatan}</p>
@@ -88,12 +88,13 @@ const DetailPengajuanCuti = () => {
           <p className="mb-4">{formatDate(formData.endDate)}</p>
 
           <p className="text-lg font-semibold mb-2">Sisa Cuti Tahunan:</p>
-          <p className="mb-4">{formData.remainingAnnualLeave}</p>
+          <p className="mb-4">{user && user.sisacuti}</p>
 
           {/* Tombol Print PDF dan Download PDF */}
           <BlobProvider
             document={
-              <SuratPengajuanCuti formData={{ ...formData, kodeSurat }} />
+              <SuratPengajuanCuti formData={{ ...formData }} user={user}/>
+
             }
           >
             {({ blob, url }) => (
@@ -103,15 +104,13 @@ const DetailPengajuanCuti = () => {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={incrementKodeSurat}
                 >
                   <IoPrintOutline className="w-5 h-5 mr-1" /> Print PDF
                 </a>
                 <button
                   className="flex items-center justify-center py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
                   onClick={() => {
-                    saveAs(blob, "cutiku.pdf");
-                    incrementKodeSurat();
+                    saveAs(blob, `Surat Pengajuan Cuti - ${user && user.name}.pdf`);
                   }}
                 >
                   <IoDownloadOutline className="w-5 h-5 mr-1" /> Download PDF
