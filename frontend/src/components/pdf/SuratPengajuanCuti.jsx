@@ -6,15 +6,24 @@ import {
   Document,
   StyleSheet,
   Image,
+  // Font,
 } from "@react-pdf/renderer";
 import checkmarkImage from "../../images/checkmark.png";
+import axios from "axios";
+
+// Font.register({
+//   family: "Times New Roman",
+//   fonts: [
+//     { src: "./Tinos-Regular.ttf" },
+//   ],
+// });
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFF",
     padding: 15,
-    border: "1px solid black",
+    // fontFamily: "Times New Roman",
   },
   section: {
     flexGrow: 1,
@@ -258,6 +267,27 @@ const styles = StyleSheet.create({
 const SuratPengajuanCuti = ({ formData, user }) => {
   const [bulanSurat, setBulanSurat] = useState("");
   const [tahunSurat, setTahunSurat] = useState(new Date().getFullYear());
+  const [constants, setConstants] = useState([]);
+  useEffect(() => {
+    getConstants();
+  }, []);
+  const getConstants = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/constants");
+      setConstants(response.data);
+    } catch (error) {
+      console.error("Error fetching constants:", error);
+    }
+  };
+
+  const getValueByName = (name) => {
+    const item = constants.find((obj) => obj.name === name);
+    return item ? item.value : null;
+  };
+
+  const kepalaKantor = getValueByName("Kepala Kantor");
+  const namaKantor = getValueByName("Nama Kantor");
+  const nipkepala = getValueByName("NIP Kepala Kantor");
 
   useEffect(() => {
     const months = [
@@ -309,9 +339,9 @@ const SuratPengajuanCuti = ({ formData, user }) => {
 
           {/* Address */}
           <View style={styles.address}>
-            <Text>Aceh Besar, {formData.tglSurat}</Text>
+            <Text>Aceh Besar, {formatDate(formData.tglSurat)}</Text>
             <Text>Kepada</Text>
-            <Text>Yth. Kepala Stasiun Klimatologi Aceh</Text>
+            <Text>Yth. Kepala {namaKantor}</Text>
             <Text>di</Text>
             <Text>Aceh Besar</Text>
           </View>
@@ -344,7 +374,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel}>Unit Kerja</Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue}>{formData.unitKerja}</Text>
+                  <Text style={styles.tableRowValue}>{namaKantor}</Text>
                 </View>
               </View>
 
@@ -612,9 +642,11 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                 </View>
 
                 <View style={styles.tableRowContainer7}>
-                  <Text style={styles.tableRowValue777}>{formData.nama}</Text>
+                  <Text style={styles.tableRowValue777}>
+                    {user && user.name}
+                  </Text>
                   <Text style={styles.tableRowValue7777}>
-                    NIP.{formData.nip}
+                    NIP.{user && user.nip}
                   </Text>
                 </View>
               </View>
@@ -680,15 +712,13 @@ const SuratPengajuanCuti = ({ formData, user }) => {
               <View style={styles.column}>
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel77}>
-                    Kepala Stasiun Klimatologi Aceh
+                    Kepala {namaKantor}
                   </Text>
                 </View>
 
                 <View style={styles.tableRowContainer7}>
-                  <Text style={styles.tableRowValue777}>(Muhajir,M.Si)</Text>
-                  <Text style={styles.tableRowValue7777}>
-                    NIP. 198409192007011010
-                  </Text>
+                  <Text style={styles.tableRowValue777}>({kepalaKantor})</Text>
+                  <Text style={styles.tableRowValue7777}>{nipkepala}</Text>
                 </View>
               </View>
             </View>
@@ -754,15 +784,13 @@ const SuratPengajuanCuti = ({ formData, user }) => {
               <View style={styles.column}>
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel77}>
-                    Kepala Stasiun Klimatologi Aceh
+                    Kepala {namaKantor}
                   </Text>
                 </View>
 
                 <View style={styles.tableRowContainer7}>
-                  <Text style={styles.tableRowValue777}>(Muhajir,M.Si)</Text>
-                  <Text style={styles.tableRowValue7777}>
-                    NIP. 198409192007011010
-                  </Text>
+                  <Text style={styles.tableRowValue777}>({kepalaKantor})</Text>
+                  <Text style={styles.tableRowValue7777}>{nipkepala}</Text>
                 </View>
               </View>
             </View>

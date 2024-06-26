@@ -4,24 +4,27 @@ import axios from "axios";
 
 const ConstantList = () => {
   const [constants, setConstants] = useState([]);
-
-  useEffect(() => {
-    getConstants();
-  }, []);
-
-  const getConstants = async () => {
-    const response = await axios.get("http://localhost:5000/constants");
-    setConstants(response.data);
-  };
-
   const [editState, setEditState] = useState({
     row: null,
     col: null,
     value: "",
   });
 
-  const handleDoubleClick = (rowIndex, colIndex, currentValue) => {
-    setEditState({ row: rowIndex, col: colIndex, value: currentValue });
+  useEffect(() => {
+    getConstants();
+  }, []);
+
+  const getConstants = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/constants");
+      setConstants(response.data);
+    } catch (error) {
+      console.error("Error fetching constants:", error);
+    }
+  };
+
+  const handleDoubleClick = (rowIndex, colName, currentValue) => {
+    setEditState({ row: rowIndex, col: colName, value: currentValue });
   };
 
   const handleInputChange = (e) => {
@@ -64,9 +67,13 @@ const ConstantList = () => {
     }
   };
 
-  const deleteConstant = async (constantsID) => {
-    await axios.delete(`http://localhost:5000/constants/${constantsID}`);
-    getConstants();
+  const deleteConstant = async (constantID) => {
+    try {
+      await axios.delete(`http://localhost:5000/constants/${constantID}`);
+      getConstants();
+    } catch (error) {
+      console.error("Error deleting constant:", error);
+    }
   };
 
   return (
@@ -123,7 +130,6 @@ const ConstantList = () => {
                   constant.value
                 )}
               </td>
-
               <td>
                 <button
                   onClick={() => deleteConstant(constant.uuid)}

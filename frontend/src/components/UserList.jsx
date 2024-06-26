@@ -10,13 +10,21 @@ const UserList = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users");
-    setUsers(response.data);
+    try {
+      const response = await axios.get("http://localhost:5000/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`http://localhost:5000/users/${userId}`);
-    getUsers();
+    try {
+      await axios.delete(`http://localhost:5000/users/${userId}`);
+      getUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   return (
@@ -52,7 +60,7 @@ const UserList = () => {
               <td>
                 <Link
                   to={`/users/edit/${user.uuid}`}
-                  className="button is-small is-info"
+                  className="button is-small is-info mr-2"
                 >
                   Edit
                 </Link>

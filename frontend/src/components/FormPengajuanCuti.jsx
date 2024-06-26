@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FormPengajuanCuti = ({ setFormData }) => {
   const { unitKerja } = useParams();
@@ -8,22 +9,11 @@ const FormPengajuanCuti = ({ setFormData }) => {
   const navigate = useNavigate();
   const jumlahCutiTahunan = user && user.sisacuti;
 
-  // Daftar tanggal merah atau hari libur
-  const tanggalMerah = [
-    //Juni
-    "2024-06-17",
-    "2024-06-18",
-    //Juli
-    "2024-07-07",
-    //Agustus
-    "2024-08-17",
-    "2024-08-18",
-    //September
-    "2024-09-16",
-    //Desember
-    "2024-12-25",
-    "2024-12-26",
-  ];
+  const [sisacuti, setSisaCuti] = useState(0);
+  const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
+  const [role, setRole] = useState("");
+  const id = user && user.uuid;
 
   const [formData, setLocalFormData] = useState({
     nama: user && user.name,
@@ -44,8 +34,57 @@ const FormPengajuanCuti = ({ setFormData }) => {
     confirm: false,
   });
 
-  const [remainingAnnualLeave, setRemainingAnnualLeave] =
-    useState(jumlahCutiTahunan);
+  useEffect(() => {
+    const getUserById = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        setSisaCuti(response.data.sisacuti);
+        setRole(response.data.role);
+      } catch (error) {}
+    };
+    getUserById();
+  }, [id]);
+
+  useEffect(() => {
+    if (formData && formData.leaveType === "Cuti Tahunan") {
+      const newSisaCuti = (user?.sisacuti || 0) - (formData.leaveDays || 0);
+      updateSisaCuti(user.uuid, newSisaCuti); // Panggil fungsi untuk update ke database
+    }
+  }, [formData, user]);
+
+  const updateSisaCuti = async (userId, newSisaCuti) => {
+    try {
+      await axios.patch(`http://localhost:5000/users/${userId}`, {
+        name: user && user.name,
+        email: user && user.email,
+        nip: user && user.nip,
+        sisacuti: newSisaCuti,
+        password: password,
+        confPassword: confPassword,
+        role: role,
+      });
+    } catch (error) {
+      console.error("Failed to update sisa cuti:", error);
+    }
+  };
+
+  // Daftar tanggal merah atau hari libur
+  const tanggalMerah = [
+    //Juni
+    "2024-06-17",
+    "2024-06-18",
+    //Juli
+    "2024-07-07",
+    //Agustus
+    "2024-08-17",
+    "2024-08-18",
+    //September
+    "2024-09-16",
+    //Desember
+    "2024-12-25",
+    "2024-12-26",
+  ];
+
   const [editableLeaveDays, setEditableLeaveDays] = useState("");
   const [editableEndDate, setEditableEndDate] = useState("");
 
@@ -122,17 +161,16 @@ const FormPengajuanCuti = ({ setFormData }) => {
       formData.tglSurat &&
       formData.noTelpon
     ) {
-      let newRemainingAnnualLeave = remainingAnnualLeave;
+      let newRemainingAnnualLeave = jumlahCutiTahunan;
       if (formData.leaveType === "Cuti Tahunan") {
         newRemainingAnnualLeave =
-          remainingAnnualLeave - parseInt(formData.leaveDays);
+          jumlahCutiTahunan - parseInt(formData.leaveDays);
         if (newRemainingAnnualLeave < 0) {
           alert(
             "Jumlah cuti yang diambil melebihi jumlah cuti tahunan yang tersisa."
           );
           return;
         }
-        setRemainingAnnualLeave(newRemainingAnnualLeave);
       }
       setFormData({
         ...formData,
@@ -210,8 +248,8 @@ const FormPengajuanCuti = ({ setFormData }) => {
             />
           </div>
 
-         {/* Tanggal Surat */}
-         <div className="mb-4">
+          {/* Tanggal Surat */}
+          <div className="mb-4">
             <label
               htmlFor="tglSurat"
               className="block text-gray-700 font-medium mb-2"
