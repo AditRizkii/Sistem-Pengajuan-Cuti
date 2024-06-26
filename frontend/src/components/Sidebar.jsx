@@ -1,14 +1,13 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../logo_bmkg.png";
-import { IoPerson, IoKey, IoHome, IoLogOut } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { IoKey, IoHome, IoLogOut } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
 
   const logout = () => {
     dispatch(LogOut());
@@ -40,17 +39,6 @@ const Sidebar = () => {
               <div className="flex gap-2">
                 <IoKey />
                 Constant
-              </div>
-            </NavLink>
-          </li>
-        </ul>
-        <p className="menu-label">Admin</p>
-        <ul className="menu-list">
-          <li>
-            <NavLink to={"/users"}>
-              <div className="flex gap-2">
-                <IoPerson />
-                Users
               </div>
             </NavLink>
           </li>

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Layout from "./Layout";
-import Welcome from "../components/Welcome";
+import UserList from "../components/UserList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/authSlice";
 
-const Dashboard = () => {
+const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,9 +25,9 @@ const Dashboard = () => {
   }, [isError, user, navigate]);
   return (
     <Layout>
-      <Welcome />
+      <UserList />
     </Layout>
   );
 };
 
-export default Dashboard;
+export default Users;
