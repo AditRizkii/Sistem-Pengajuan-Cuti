@@ -5,12 +5,22 @@ import {
     createUser,
     updateUser,
     deleteUser,
-    updateCuti
+    updateCuti,
+    updateCutiAtYearEnd
  } from "../controllers/UserController.js";
 
  import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 
  const router = express.Router();
+
+ const updateCuti = async (req, res) => {
+    try {
+        await updateCutiAtYearEnd();
+        res.status(200).json({msg: "Leave data updated for the new year"});
+    } catch (error) {
+        res.status(500).json({msg: "Failed to update leave data"});
+    }
+}
 
  router.get("/users",verifyUser,adminOnly, getUsers);
  router.get("/users/:id",verifyUser,adminOnly, getUserById);
@@ -18,5 +28,6 @@ import {
  router.patch("/users/:id",verifyUser,adminOnly, updateUser);
  router.patch("/users-cuti/:id",verifyUser, updateCuti);
  router.delete("/users/:id",verifyUser,adminOnly, deleteUser);
+ router.post('/update-cuti-year-end', updateCuti);
  
  export default router;

@@ -130,3 +130,27 @@ export const deleteUser = async (req, res) => {
         res.status(400).json({msg: error.message});
     }
 }
+
+export const updateCutiAtYearEnd = async () => {
+    try {
+        const users = await Users.findAll();
+        for (let user of users) {
+            let newSisaCutiN2 = user.sisacutiN1 > 6 ? 6 : user.sisacutiN1;
+            let newSisaCutiN1 = user.sisacuti > 6 ? 6 : user.sisacuti;
+            let newSisaCuti = 12;
+
+            await Users.update({
+                sisacuti: newSisaCuti,
+                sisacutiN1: newSisaCutiN1,
+                sisacutiN2: newSisaCutiN2
+            }, {
+                where: {
+                    id: user.id
+                }
+            });
+        }
+        console.log('Successfully updated leave data for the new year');
+    } catch (error) {
+        console.error('Error updating leave data:', error);
+    }
+}
