@@ -59,10 +59,7 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="field mt-5">
-                  <button
-                    type="submit"
-                    className="button is-info is-fullwidth"
-                  >
+                  <button type="submit" className="button is-info is-fullwidth">
                     {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>

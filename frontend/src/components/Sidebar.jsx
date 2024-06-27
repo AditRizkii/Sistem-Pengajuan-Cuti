@@ -16,9 +16,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div>
+    <div className="sidebar">
       <aside className="menu pl-4 has-shadow">
-        <div className="flex justify-center">
+        <div className="flex justify-center py-4">
           <NavLink to={"/dashboard"} className="navbar-item">
             <img src={logo} width="112" alt="logo" className="is-rounded" />
           </NavLink>
@@ -27,29 +27,28 @@ const Sidebar = () => {
         <p className="menu-label">General</p>
         <ul className="menu-list">
           <li>
-            <NavLink to="/dashboard">
-              <div className="flex gap-2">
+            <NavLink to="/dashboard" className="menu-item">
+              <div className="flex items-center gap-2">
                 <IoHome /> Dashboard
               </div>
             </NavLink>
           </li>
 
           <li>
-            <NavLink to={"/constants"}>
-              <div className="flex gap-2">
-                <IoKey />
-                Constant
+            <NavLink to={"/constants"} className="menu-item">
+              <div className="flex items-center gap-2">
+                <IoKey /> Constant
               </div>
             </NavLink>
           </li>
         </ul>
+
         <p className="menu-label">Settings</p>
         <ul className="menu-list">
           <li>
-            <button onClick={logout} className="button is-white ">
-              <div className="flex gap-2">
-                <IoLogOut />
-                Log Out
+            <button onClick={logout} className="button is-white is-fullwidth">
+              <div className="flex items-center gap-2">
+                <IoLogOut /> Log Out
               </div>
             </button>
           </li>
