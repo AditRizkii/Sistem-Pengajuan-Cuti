@@ -6,7 +6,7 @@ import argon2 from "argon2";
 export const getUsers = async (req, res) => {
     try {
         const response = await Users.findAll({
-            attributes:['uuid','name','email','role', 'nip', 'sisacuti']
+            attributes:['uuid','name','email','role', 'nip', 'sisacuti', 'sisacutiN1', 'sisacutiN2']
         });
         res.status(200).json(response);
     } catch (error) {
@@ -17,7 +17,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     try {
         const response = await Users.findOne({
-            attributes:['uuid','name','email','role', 'nip', 'sisacuti'],
+            attributes:['uuid','name','email','role', 'nip', 'sisacuti', 'sisacutiN1', 'sisacutiN2'],
             where: {
                 uuid: req.params.id
             }
@@ -39,7 +39,9 @@ export const createUser = async (req, res) => {
             password: hashPassword,
             nip: nip,
             role: role,
-            sisacuti : sisacuti
+            sisacuti : sisacuti,
+            sisacutiN1 : 0,
+            sisacutiN2 : 0
         });
         res.status(201).json({msg: "Register Berhasil"});
     } catch (error) {
@@ -54,7 +56,7 @@ export const updateUser = async (req, res) => {
         }
     });
     if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-    const {name, email, password, confPassword, role, nip, sisacuti} = req.body;
+    const {name, email, password, confPassword, role, nip, sisacuti, sisacutiN1, sisacutiN2} = req.body;
     let hashPassword;
     if(password === "" || password === null){
         hashPassword = user.password
@@ -69,7 +71,9 @@ export const updateUser = async (req, res) => {
             password: hashPassword,
             role: role,
             nip : nip,
-            sisacuti : sisacuti
+            sisacuti : sisacuti,
+            sisacutiN1 : sisacutiN1,
+            sisacutiN2 : sisacutiN2
         },{
             where:{
                 id: user.id
@@ -88,13 +92,15 @@ export const updateCuti = async (req, res) => {
         }
     });
     if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-    const {name, nip, sisacuti} = req.body;
+    const {name, nip, sisacuti , sisacutiN1, sisacutiN2} = req.body;
     
     try {
         await Users.update({
             name: name,
             nip : nip,
-            sisacuti : sisacuti
+            sisacuti : sisacuti,
+            sisacutiN1 : sisacutiN1,
+            sisacutiN2 : sisacutiN2
         },{
             where:{
                 id: user.id

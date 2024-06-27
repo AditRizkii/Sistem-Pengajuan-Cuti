@@ -10,9 +10,6 @@ const FormPengajuanCuti = ({ setFormData }) => {
   const jumlahCutiTahunan = user && user.sisacuti;
 
   const [sisacuti, setSisaCuti] = useState(0);
-  const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
-  const [role, setRole] = useState("");
   const id = user && user.uuid;
 
   const [formData, setLocalFormData] = useState({
@@ -39,29 +36,26 @@ const FormPengajuanCuti = ({ setFormData }) => {
       try {
         const response = await axios.get(`http://localhost:5000/users/${id}`);
         setSisaCuti(response.data.sisacuti);
-        setRole(response.data.role);
       } catch (error) {}
     };
     getUserById();
   }, [id]);
 
-  useEffect(() => {
-    if (formData && formData.leaveType === "Cuti Tahunan") {
-      const newSisaCuti = (user?.sisacuti || 0) - (formData.leaveDays || 0);
-      updateSisaCuti(user.uuid, newSisaCuti); // Panggil fungsi untuk update ke database
-    }
-  }, [formData, user]);
+  // useEffect(() => {
+  //   if (formData && formData.leaveType === "Cuti Tahunan") {
+  //     const newSisaCuti = (user?.sisacuti || 0) - (formData.leaveDays || 0);
+  //     updateSisaCuti(user.uuid, newSisaCuti); // Panggil fungsi untuk update ke database
+  //   }
+  // }, [formData, user]);
 
   const updateSisaCuti = async (userId, newSisaCuti) => {
     try {
-      await axios.patch(`http://localhost:5000/users/${userId}`, {
+      await axios.patch(`http://localhost:5000/users-cuti/${userId}`, {
         name: user && user.name,
-        email: user && user.email,
         nip: user && user.nip,
         sisacuti: newSisaCuti,
-        password: password,
-        confPassword: confPassword,
-        role: role,
+        sisacutiN1: 0,
+        sisacutiN2: 0,
       });
     } catch (error) {
       console.error("Failed to update sisa cuti:", error);
@@ -172,6 +166,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
           return;
         }
       }
+      updateSisaCuti(user.uuid, newRemainingAnnualLeave);
       setFormData({
         ...formData,
         remainingAnnualLeave: newRemainingAnnualLeave,
