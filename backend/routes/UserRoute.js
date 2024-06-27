@@ -13,7 +13,7 @@ import {
 
  const router = express.Router();
 
- const updateCuti = async (req, res) => {
+ const updateSisaCuti = async (req, res) => {
     try {
         await updateCutiAtYearEnd();
         res.status(200).json({msg: "Leave data updated for the new year"});
@@ -28,6 +28,6 @@ import {
  router.patch("/users/:id",verifyUser,adminOnly, updateUser);
  router.patch("/users-cuti/:id",verifyUser, updateCuti);
  router.delete("/users/:id",verifyUser,adminOnly, deleteUser);
- router.post('/update-cuti-year-end', updateCuti);
+ router.post('/update-cuti-year-end', updateSisaCuti);
  
  export default router;
