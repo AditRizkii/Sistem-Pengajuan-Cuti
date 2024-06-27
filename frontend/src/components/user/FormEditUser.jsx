@@ -6,6 +6,8 @@ const FormEditUser = () => {
   const [name, setName] = useState("");
   const [nip, setNIP] = useState("");
   const [sisacuti, setSisaCuti] = useState(0);
+  const [sisacuti1, setSisaCuti1] = useState(0);
+  const [sisacuti2, setSisaCuti2] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
@@ -21,6 +23,8 @@ const FormEditUser = () => {
         setName(response.data.name);
         setNIP(response.data.nip);
         setSisaCuti(response.data.sisacuti);
+        setSisaCuti1(response.data.sisacutiN1);
+        setSisaCuti2(response.data.sisacutiN2);
         setEmail(response.data.email);
         setRole(response.data.role);
       } catch (error) {
@@ -40,6 +44,8 @@ const FormEditUser = () => {
         email: email,
         nip: nip,
         sisacuti: sisacuti,
+        sisacutiN1: sisacuti1,
+        sisacutiN2: sisacuti2,
         password: password,
         confPassword: confPassword,
         role: role,
@@ -101,7 +107,7 @@ const FormEditUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Sisa Cuti</label>
+                <label className="label">Sisa Cuti (N)</label>
                 <div className="control">
                   <input
                     type="number"
@@ -115,6 +121,46 @@ const FormEditUser = () => {
                         Math.min(12, Number(e.target.value))
                       );
                       setSisaCuti(value);
+                    }}
+                    placeholder="Sisa cuti"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Sisa Cuti (N -1)</label>
+                <div className="control">
+                  <input
+                    type="number"
+                    min={0}
+                    max={6}
+                    className="input"
+                    value={sisacuti1}
+                    onChange={(e) => {
+                      const value = Math.max(
+                        0,
+                        Math.min(6, Number(e.target.value))
+                      );
+                      setSisaCuti1(value);
+                    }}
+                    placeholder="Sisa cuti"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Sisa Cuti (N -2)</label>
+                <div className="control">
+                  <input
+                    type="number"
+                    min={0}
+                    max={6}
+                    className="input"
+                    value={sisacuti2}
+                    onChange={(e) => {
+                      const value = Math.max(
+                        0,
+                        Math.min(6, Number(e.target.value))
+                      );
+                      setSisaCuti2(value);
                     }}
                     placeholder="Sisa cuti"
                   />

@@ -6,18 +6,14 @@ const FormAddUser = () => {
   const [name, setName] = useState("");
   const [nip, setNIP] = useState("");
   const [sisacuti, setSisaCuti] = useState(0);
+  const [sisacuti1, setSisaCuti1] = useState(0);
+  const [sisacuti2, setSisaCuti2] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [role, setRole] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-
-  const handleInputChange = (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, ""); // Hanya menyimpan angka
-    value = Math.max(0, Math.min(12, Number(value))); // Memastikan nilai berada di antara 0 dan 12
-    setSisaCuti(value); // Menyimpan angka di state
-  };
 
   const saveUser = async (e) => {
     e.preventDefault();
@@ -26,6 +22,8 @@ const FormAddUser = () => {
         name: name,
         nip: nip,
         sisacuti: sisacuti,
+        sisacutiN1: sisacuti1,
+        sisacutiN2: sisacuti2,
         email: email,
         password: password,
         confPassword: confPassword,
@@ -108,6 +106,46 @@ const FormAddUser = () => {
                 </div>
               </div>
               <div className="field">
+                <label className="label">Sisa Cuti (N - 1)</label>
+                <div className="control">
+                  <input
+                    type="number"
+                    min={0}
+                    max={6}
+                    className="input"
+                    value={sisacuti1}
+                    onChange={(e) => {
+                      const value = Math.max(
+                        0,
+                        Math.min(6, Number(e.target.value))
+                      );
+                      setSisaCuti1(value);
+                    }}
+                    placeholder="Sisa cuti (N - 1)"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Sisa Cuti (N - 2)</label>
+                <div className="control">
+                  <input
+                    type="number"
+                    min={0}
+                    max={6}
+                    className="input"
+                    value={sisacuti2}
+                    onChange={(e) => {
+                      const value = Math.max(
+                        0,
+                        Math.min(6, Number(e.target.value))
+                      );
+                      setSisaCuti2(value);
+                    }}
+                    placeholder="Sisa cuti (N - 2)"
+                  />
+                </div>
+              </div>
+              <div className="field">
                 <label className="label">Password</label>
                 <div className="control">
                   <input
@@ -139,6 +177,9 @@ const FormAddUser = () => {
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
                     >
+                      <option value="" disabled>
+                        Silahkan Pilih Role
+                      </option>
                       <option value="admin">Admin</option>
                       <option value="user">User</option>
                     </select>

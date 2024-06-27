@@ -6,24 +6,23 @@ import {
   Document,
   StyleSheet,
   Image,
-  // Font,
+  Font,
 } from "@react-pdf/renderer";
 import checkmarkImage from "../../images/checkmark.png";
 import axios from "axios";
+import Tinos from "./Tinos-Regular.ttf";
 
-// Font.register({
-//   family: "Times New Roman",
-//   fonts: [
-//     { src: "./Tinos-Regular.ttf" },
-//   ],
-// });
+Font.register({
+  family: "Times New Roman",
+  fonts: [{ src: Tinos }],
+});
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFF",
     padding: 15,
-    // fontFamily: "Times New Roman",
+    fontFamily: "Times New Roman",
   },
   section: {
     flexGrow: 1,
@@ -57,6 +56,12 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   catatan: {
+    fontSize: 8,
+    textAlign: "start",
+    fontWeight: "bold",
+    textDecoration: "underline",
+  },
+  catatan2: {
     fontSize: 8,
     textAlign: "start",
     marginBottom: 7,
@@ -259,7 +264,11 @@ const styles = StyleSheet.create({
   },
   checkmark: {
     width: 8,
-    height: 8,
+    height: 7,
+    backgroundColor: "transparent",
+  },
+  checkmark2: {
+    width: 10,
     backgroundColor: "transparent",
   },
 });
@@ -541,7 +550,9 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel5}>N-2</Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue5}>0 Hari</Text>
+                  <Text style={styles.tableRowValue5}>
+                    {user && user.sisacutiN2} Hari
+                  </Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>
                     Tahun {DuaTahunSebelumnya()}
@@ -551,7 +562,9 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowLabel5}>N-1</Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue5}>0 Hari</Text>
+                  <Text style={styles.tableRowValue5}>
+                    {user && user.sisacutiN1} Hari
+                  </Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>
                     Tahun {TahunSebelumnya()}
@@ -562,7 +575,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                   <Text style={styles.tableRowLabel5}>N</Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>
-                    {formData.remainingAnnualLeave} Hari
+                    {user && user.sisacuti} Hari
                   </Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>Tahun {tahunSurat}</Text>
@@ -667,7 +680,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
 
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowValue7}>
-                    <Image src={checkmarkImage} style={styles.checkmark} />
+                    <Image src={checkmarkImage} style={styles.checkmark2} />
                   </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
@@ -718,7 +731,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
 
                 <View style={styles.tableRowContainer7}>
                   <Text style={styles.tableRowValue777}>({kepalaKantor})</Text>
-                  <Text style={styles.tableRowValue7777}>{nipkepala}</Text>
+                  <Text style={styles.tableRowValue7777}>NIP. {nipkepala}</Text>
                 </View>
               </View>
             </View>
@@ -739,7 +752,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                 <View style={styles.tableRowContainer}>
                   <Text style={styles.tableRowValue7}>
                     {" "}
-                    <Image src={checkmarkImage} style={styles.checkmark} />
+                    <Image src={checkmarkImage} style={styles.checkmark2} />
                   </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
@@ -790,18 +803,18 @@ const SuratPengajuanCuti = ({ formData, user }) => {
 
                 <View style={styles.tableRowContainer7}>
                   <Text style={styles.tableRowValue777}>({kepalaKantor})</Text>
-                  <Text style={styles.tableRowValue7777}>{nipkepala}</Text>
+                  <Text style={styles.tableRowValue7777}>NIP. {nipkepala}</Text>
                 </View>
               </View>
             </View>
           </View>
 
           {/* Catatan */}
-          <View style={styles.catatan}>
-            <Text>Catatan:</Text>
+          <View style={styles.catatan2}>
+            <Text style={styles.catatan}>Catatan:</Text>
             <Text>
-              • {"\u00A0"}
-              {"\u00A0"} {"\u00A0"} {"\u00A0"} Coret yang tidak perlu
+              * {"\u00A0"}
+              {"\u00A0"} {"\u00A0"} {"\u00A0"} {"\u00A0"} Coret yang tidak perlu
             </Text>
             <Text>
               ** {"\u00A0"}
@@ -816,7 +829,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
             </Text>
             <Text>
               **** {"\u00A0"}
-              {"\u00A0"} {"\u00A0"} diberi tanda centang dan alasannya.
+              {"\u00A0"} diberi tanda centang dan alasannya.
             </Text>
             <Text>
               N {"\u00A0"}

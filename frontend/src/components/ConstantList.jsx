@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ConstantList = () => {
   const [constants, setConstants] = useState([]);
@@ -77,71 +79,75 @@ const ConstantList = () => {
   };
 
   return (
-    <div>
-      <h1 className="title">Constants</h1>
-      <h2 className="subtitle">List of Constants</h2>
-      <Link to="/constants/add" className="button is-primary mb-2">
-        Add New
-      </Link>
-      <table className="table is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Value</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {constants.map((constant, index) => (
-            <tr key={constant.uuid}>
-              <td>{index + 1}</td>
-              <td
-                onDoubleClick={() =>
-                  handleDoubleClick(index, "name", constant.name)
-                }
-              >
-                {editState.row === index && editState.col === "name" ? (
-                  <input
-                    type="text"
-                    value={editState.value}
-                    onChange={handleInputChange}
-                    onBlur={() => handleInputBlur(constant.uuid)}
-                    autoFocus
-                  />
-                ) : (
-                  constant.name
-                )}
-              </td>
-              <td
-                onDoubleClick={() =>
-                  handleDoubleClick(index, "value", constant.value)
-                }
-              >
-                {editState.row === index && editState.col === "value" ? (
-                  <input
-                    type="text"
-                    value={editState.value}
-                    onChange={handleInputChange}
-                    onBlur={() => handleInputBlur(constant.uuid)}
-                    autoFocus
-                  />
-                ) : (
-                  constant.value
-                )}
-              </td>
-              <td>
-                <button
-                  onClick={() => deleteConstant(constant.uuid)}
-                  className="button is-small is-danger"
-                >
-                  Delete
-                </button>
-              </td>
+    <div className="container mt-5">
+      <div className="box">
+        <h1 className="title has-text-centered mb-2">Constants</h1>
+        <h2 className="subtitle has-text-centered">List of Constants</h2>
+        <div className="has-text-right mb-4">
+          <Link to="/constants/add" className="button is-primary">
+            <FontAwesomeIcon icon={faPlus} /> &nbsp; Add New
+          </Link>
+        </div>
+        <table className="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Value</th>
+              <th style={{ textAlign: "center" }}>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {constants.map((constant, index) => (
+              <tr key={constant.uuid}>
+                <td>{index + 1}</td>
+                <td
+                  onDoubleClick={() =>
+                    handleDoubleClick(index, "name", constant.name)
+                  }
+                >
+                  {editState.row === index && editState.col === "name" ? (
+                    <input
+                      type="text"
+                      value={editState.value}
+                      onChange={handleInputChange}
+                      onBlur={() => handleInputBlur(constant.uuid)}
+                      autoFocus
+                    />
+                  ) : (
+                    constant.name
+                  )}
+                </td>
+                <td
+                  onDoubleClick={() =>
+                    handleDoubleClick(index, "value", constant.value)
+                  }
+                >
+                  {editState.row === index && editState.col === "value" ? (
+                    <input
+                      type="text"
+                      value={editState.value}
+                      onChange={handleInputChange}
+                      onBlur={() => handleInputBlur(constant.uuid)}
+                      autoFocus
+                    />
+                  ) : (
+                    constant.value
+                  )}
+                </td>
+                <td style={{ textAlign: "center" }}>
+                  <button
+                    onClick={() => deleteConstant(constant.uuid)}
+                    className="button is-small is-danger"
+                  >
+                    <FontAwesomeIcon icon={faTrash} /> &nbsp; Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

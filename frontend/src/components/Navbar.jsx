@@ -1,12 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
 
   const logout = () => {
     dispatch(LogOut());
@@ -21,11 +20,24 @@ const Navbar = () => {
         role="navigation"
         aria-label="main navigation"
       >
+        <div className="navbar-brand">
+          <a className="navbar-item" href="/">
+            <span
+              style={{
+                marginLeft: "10px",
+                fontWeight: "bold",
+                fontSize: "1.5em",
+              }}
+            >
+              Sistem Pengajuan Cuti Pegawai
+            </span>
+          </a>
+        </div>
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <button onClick={logout} className="button is-light">
+                <button onClick={logout} className="button is-danger is-light">
                   Log Out
                 </button>
               </div>
