@@ -14,7 +14,6 @@ import axios from "axios";
 
 function App() {
   const [formData, setFormData] = useState(null);
-  const [constants, setConstants] = useState([]);
   const [lastChecked, setLastChecked] = useState(null);
   const [uuid, setUuid] = useState(null);
 
@@ -25,7 +24,6 @@ function App() {
   const getConstants = async () => {
     try {
       const response = await axios.get("http://localhost:5000/constants");
-      setConstants(response.data);
       const lastCheckedConst = response.data.find(
         (obj) => obj.name === "lastChecked"
       );
@@ -44,6 +42,7 @@ function App() {
         name: "lastChecked",
         value: year,
       });
+      await axios.patch(`http://localhost:5000/update-cuti-year-end`)
     } catch (error) {
       if (error.response) {
         console.error("Failed to update database:", error.response.data.msg);
@@ -59,7 +58,7 @@ function App() {
       console.log(year);
 
       if (lastChecked && uuid && year !== parseInt(lastChecked, 10)) {
-        updateYear(year, uuid);
+        updateYear(year, uuid);// Jalankan tugas update cuti pada tahun akhir
       }
     };
 

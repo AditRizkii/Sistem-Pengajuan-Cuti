@@ -179,11 +179,11 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const updateCutiAtYearEnd = async () => {
+export const updateCutiAtYearEnd = async (req, res) => {
   try {
     const users = await Users.findAll();
     for (let user of users) {
-      let newSisaCutiN2 = user.sisacutiN1 > 6 ? 6 : user.sisacutiN1;
+      let newSisaCutiN2 = user.sisacutiN1 < 6 ? user.sisacutiN1 : 6;
       let newSisaCutiN1 = user.sisacuti > 6 ? 6 : user.sisacuti;
       let newSisaCuti = 12;
 
@@ -200,8 +200,8 @@ export const updateCutiAtYearEnd = async () => {
         }
       );
     }
-    console.log("Successfully updated leave data for the new year");
+    res.status(200).json({msg: "Leave data updated for the new year"});
   } catch (error) {
-    console.error("Error updating leave data:", error);
+    res.status(500).json({msg: "Failed to update leave data"});
   }
 };
