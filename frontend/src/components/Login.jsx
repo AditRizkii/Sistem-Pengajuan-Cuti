@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginUser, reset } from "../features/authSlice";
+import logo from "../images/BMG_2003.png";
 
 const Login = () => {
   const [nip, setNIP] = useState("");
@@ -32,6 +33,9 @@ const Login = () => {
           <div className="columns is-centered">
             <div className="column is-4">
               <form className="box" onSubmit={Auth}>
+                <div className="flex justify-center">
+                  <img src={logo} width={100} />
+                </div>
                 {isError && <p className="has-text-centered">{message}</p>}
                 <h1 className="title is-2 has-text-centered">Sign In</h1>
                 <div className="field">
