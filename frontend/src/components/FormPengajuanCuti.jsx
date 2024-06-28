@@ -8,10 +8,8 @@ const FormPengajuanCuti = ({ setFormData }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const jumlahCutiTahunan = user && user.sisacuti;
-
-  const [sisacuti, setSisaCuti] = useState(0);
-  const id = user && user.uuid;
-
+  const N1 = user && user.sisacutiN1;
+  const N2 = user && user.sisacutiN2;
   const [formData, setLocalFormData] = useState({
     nama: user && user.name,
     unitKerja: decodeURIComponent(unitKerja),
@@ -31,31 +29,14 @@ const FormPengajuanCuti = ({ setFormData }) => {
     confirm: false,
   });
 
-  useEffect(() => {
-    const getUserById = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
-        setSisaCuti(response.data.sisacuti);
-      } catch (error) {}
-    };
-    getUserById();
-  }, [id]);
-
-  // useEffect(() => {
-  //   if (formData && formData.leaveType === "Cuti Tahunan") {
-  //     const newSisaCuti = (user?.sisacuti || 0) - (formData.leaveDays || 0);
-  //     updateSisaCuti(user.uuid, newSisaCuti); // Panggil fungsi untuk update ke database
-  //   }
-  // }, [formData, user]);
-
-  const updateSisaCuti = async (userId, newSisaCuti) => {
+  const updateSisaCuti = async (userId, N, N1, N2) => {
     try {
       await axios.patch(`http://localhost:5000/users-cuti/${userId}`, {
         name: user && user.name,
         nip: user && user.nip,
-        sisacuti: newSisaCuti,
-        sisacutiN1: 0,
-        sisacutiN2: 0,
+        sisacuti: N,
+        sisacutiN1: N1,
+        sisacutiN2: N2,
       });
     } catch (error) {
       console.error("Failed to update sisa cuti:", error);
@@ -156,26 +137,60 @@ const FormPengajuanCuti = ({ setFormData }) => {
       formData.noTelpon
     ) {
       let newRemainingAnnualLeave = jumlahCutiTahunan;
+      let newN1 = N1;
+      let newN2 = N2;
+      let lamanyacuti = parseInt(formData.leaveDays);
+
       if (formData.leaveType === "Cuti Tahunan") {
-        newRemainingAnnualLeave =
-          jumlahCutiTahunan - parseInt(formData.leaveDays);
-        if (newRemainingAnnualLeave < 0) {
-          alert(
-            "Jumlah cuti yang diambil melebihi jumlah cuti tahunan yang tersisa."
-          );
+        if (newN2 > 0) {
+          newN2 -= lamanyacuti;
+          if (newN2 < 0) {
+            lamanyacuti = -newN2;
+            newN2 = 0;
+          } else {
+            lamanyacuti = 0;
+          }
+        }
+
+        if (lamanyacuti > 0 && newN1 > 0) {
+          newN1 -= lamanyacuti;
+          if (newN1 < 0) {
+            lamanyacuti = -newN1;
+            newN1 = 0;
+          } else {
+            lamanyacuti = 0;
+          }
+        }
+
+        if (lamanyacuti > 0 && newRemainingAnnualLeave > 0) {
+          newRemainingAnnualLeave -= lamanyacuti;
+          if (newRemainingAnnualLeave < 0) {
+            alert(
+              "Jumlah cuti yang diambil melebihi jumlah cuti tahunan yang tersisa."
+            );
+            return;
+          }
+        }
+
+        if (newN2 === 0 && newN1 === 0 && newRemainingAnnualLeave <= 0) {
+          alert("Tidak ada cuti yang tersisa.");
           return;
         }
       }
-      updateSisaCuti(user.uuid, newRemainingAnnualLeave);
+      updateSisaCuti(user.uuid, newRemainingAnnualLeave, newN1, newN2);
       setFormData({
         ...formData,
         remainingAnnualLeave: newRemainingAnnualLeave,
+        sisacutiN1: newN1,
+        sisacutiN2: newN2,
       });
       navigate("/tampilkan-data-cuti", {
         state: {
           formData: {
             ...formData,
             remainingAnnualLeave: newRemainingAnnualLeave,
+            sisacutiN1: newN1,
+            sisacutiN2: newN2,
           },
         },
       });
@@ -194,7 +209,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
     <div className="bg-gray-100 min-h-screen flex justify-center items-center font-Poppins py-16">
       <div className="bg-white w-full md:w-3/4 lg:w-1/2 xl:w-1/3 rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-bold mb-4 text-center">
-          Form Cuti Karyawan
+          Form Cuti Pegawai
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 text-gray-700 font-medium">
