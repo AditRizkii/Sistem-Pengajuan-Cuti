@@ -213,11 +213,35 @@ const FormPengajuanCuti = ({ setFormData }) => {
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 text-gray-700 font-medium">
-            Halo <span className="font-bold text-lg">{user && user.name}</span>
+            Halo <span className="font-bold text-lg">{user && user.name}</span>,
+            <p>Berikut adalah rincian Cuti Tahunan Anda:</p>
+            <ul className="list-disc list-inside ml-1">
+              <li>
+                Tahun Ini:
+                <span className="font-bold text-lg ml-2">
+                  {jumlahCutiTahunan} Hari
+                </span>
+              </li>
+              <li>
+                Tahun Lalu (N-1):
+                <span className="font-bold text-lg ml-2">
+                  {user && user.sisacutiN1} Hari
+                </span>
+              </li>
+              <li>
+                Dua Tahun Lalu (N-2):
+                <span className="font-bold text-lg ml-2">
+                  {user && user.sisacutiN2} Hari
+                </span>
+              </li>
+            </ul>
             <p>
-              Jumlah Cuti Tahunan tersisa
-              <span className="font-bold text-lg ml-1">
-                {jumlahCutiTahunan}{" "}
+              Jadi, total Cuti Tahunan yang dapat Anda nikmati adalah:
+              <span className="font-bold text-lg ml-2">
+                {jumlahCutiTahunan +
+                  (user ? user.sisacutiN1 : 0) +
+                  (user ? user.sisacutiN2 : 0)}{" "}
+                Hari
               </span>
             </p>
           </div>

@@ -80,7 +80,7 @@ const ConstantList = () => {
 
   return (
     <div className="container mt-5">
-      <div className="box">
+      <div className="box overflow-x-auto">
         <h1 className="title has-text-centered mb-2">Constants</h1>
         <h2 className="subtitle has-text-centered">List of Constants</h2>
         <div className="has-text-right mb-4">
@@ -99,7 +99,7 @@ const ConstantList = () => {
           </thead>
           <tbody>
             {constants.map((constant, index) => (
-              <tr key={constant.uuid}>
+              <tr key={constant.uuid} className="hover:bg-gray-100">
                 <td>{index + 1}</td>
                 <td
                   onDoubleClick={() =>
@@ -113,6 +113,7 @@ const ConstantList = () => {
                       onChange={handleInputChange}
                       onBlur={() => handleInputBlur(constant.uuid)}
                       autoFocus
+                      className="w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
                     constant.name
@@ -130,6 +131,7 @@ const ConstantList = () => {
                       onChange={handleInputChange}
                       onBlur={() => handleInputBlur(constant.uuid)}
                       autoFocus
+                      className="w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   ) : (
                     constant.value
