@@ -47,13 +47,13 @@ const UserList = () => {
 
   return (
     <div className="container mt-5">
-      <div className="box">
+      <div className="box overflow-x-auto">
         <h1 className="title has-text-centered mb-2">Daftar Pegawai</h1>
         <h2 className="subtitle has-text-centered">
           <strong>Unit Kerja :</strong> Stasiun Klimatologi Aceh
         </h2>
-        <div className="has-text-right">
-          <Link to="/users/add" className="button is-primary mb-4">
+        <div className="has-text-right mb-4">
+          <Link to="/users/add" className="button is-primary">
             <FontAwesomeIcon icon={faPlus} /> &nbsp; Add New
           </Link>
         </div>
@@ -72,7 +72,7 @@ const UserList = () => {
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr key={user.uuid}>
+              <tr key={user.uuid} className="hover:bg-gray-100">
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.nip}</td>
@@ -80,7 +80,7 @@ const UserList = () => {
                 <td>{`${user.sisacutiN1} Hari Kerja`}</td>
                 <td>{`${user.sisacutiN2} Hari Kerja`}</td>
                 <td>{user.role}</td>
-                <td>
+                <td className="text-center">
                   <Link
                     to={`/users/edit/${user.uuid}`}
                     className="button is-small is-info mr-2"

@@ -297,6 +297,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
   const kepalaKantor = getValueByName("Kepala Kantor");
   const namaKantor = getValueByName("Nama Kantor");
   const nipkepala = getValueByName("NIP Kepala Kantor");
+  const TahunSekarang = getValueByName("lastChecked");
 
   useEffect(() => {
     const months = [
@@ -322,11 +323,11 @@ const SuratPengajuanCuti = ({ formData, user }) => {
   }, []);
 
   const TahunSebelumnya = () => {
-    return new Date().getFullYear() - 1;
+    return parseInt(TahunSekarang) - 1;
   };
 
   const DuaTahunSebelumnya = () => {
-    return new Date().getFullYear() - 2;
+    return parseInt(TahunSekarang) - 2;
   };
 
   const formatDate = (dateString) => {
@@ -578,7 +579,9 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                     {user && user.sisacuti} Hari
                   </Text>
                   <View style={styles.tableRowDivider} />
-                  <Text style={styles.tableRowValue5}>Tahun {tahunSurat}</Text>
+                  <Text style={styles.tableRowValue5}>
+                    Tahun {TahunSekarang}
+                  </Text>
                   <View style={styles.tableRowDivider} />
                 </View>
               </View>
