@@ -38,6 +38,13 @@ const Users = db.define(
         len: [2, 18],
       },
     },
+    cutiBersama: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,

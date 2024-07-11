@@ -10,6 +10,7 @@ export const getUsers = async (req, res) => {
         "email",
         "role",
         "nip",
+        "cutiBersama",
         "sisacuti",
         "sisacutiN1",
         "sisacutiN2",
@@ -30,6 +31,7 @@ export const getUserById = async (req, res) => {
         "email",
         "role",
         "nip",
+        "cutiBersama",
         "sisacuti",
         "sisacutiN1",
         "sisacutiN2",
@@ -52,6 +54,7 @@ export const createUser = async (req, res) => {
     confPassword,
     role,
     nip,
+    cutiBersama,
     sisacuti,
     sisacutiN1,
     sisacutiN2,
@@ -66,6 +69,7 @@ export const createUser = async (req, res) => {
       name: name,
       email: email,
       password: hashPassword,
+      cutiBersama: cutiBersama,
       nip: nip,
       role: role,
       sisacuti: sisacuti,
@@ -92,6 +96,7 @@ export const updateUser = async (req, res) => {
     confPassword,
     role,
     nip,
+    cutiBersama,
     sisacuti,
     sisacutiN1,
     sisacutiN2,
@@ -114,6 +119,7 @@ export const updateUser = async (req, res) => {
         password: hashPassword,
         role: role,
         nip: nip,
+        cutiBersama: cutiBersama,
         sisacuti: sisacuti,
         sisacutiN1: sisacutiN1,
         sisacutiN2: sisacutiN2,
@@ -137,13 +143,14 @@ export const updateCuti = async (req, res) => {
     },
   });
   if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const { name, nip, sisacuti, sisacutiN1, sisacutiN2 } = req.body;
+  const { name, nip, cutiBersama, sisacuti, sisacutiN1, sisacutiN2 } = req.body;
 
   try {
     await Users.update(
       {
         name: name,
         nip: nip,
+        cutiBersama: cutiBersama,
         sisacuti: sisacuti,
         sisacutiN1: sisacutiN1,
         sisacutiN2: sisacutiN2,
@@ -186,9 +193,11 @@ export const updateCutiAtYearEnd = async (req, res) => {
       let newSisaCutiN2 = user.sisacutiN1 < 6 ? user.sisacutiN1 : 6;
       let newSisaCutiN1 = user.sisacuti > 6 ? 6 : user.sisacuti;
       let newSisaCuti = 12;
+      let newCutiBersama = 0;
 
       await Users.update(
         {
+          cutiBersama: newCutiBersama,
           sisacuti: newSisaCuti,
           sisacutiN1: newSisaCutiN1,
           sisacutiN2: newSisaCutiN2,
@@ -200,8 +209,8 @@ export const updateCutiAtYearEnd = async (req, res) => {
         }
       );
     }
-    res.status(200).json({msg: "Leave data updated for the new year"});
+    res.status(200).json({ msg: "Leave data updated for the new year" });
   } catch (error) {
-    res.status(500).json({msg: "Failed to update leave data"});
+    res.status(500).json({ msg: "Failed to update leave data" });
   }
 };

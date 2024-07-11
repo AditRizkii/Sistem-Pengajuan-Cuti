@@ -22,6 +22,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
     endDate: "",
     jabatan: "",
     nip: "",
+    cutiBersama: "",
     masaKerja: "",
     alamatLengkap: "",
     noTelpon: "",
@@ -29,7 +30,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
     confirm: false,
   });
 
-  const updateSisaCuti = async (userId, N, N1, N2) => {
+  const updateSisaCuti = async (userId, N, N1, N2, cutiBersama) => {
     try {
       await axios.patch(`http://localhost:5000/users-cuti/${userId}`, {
         name: user && user.name,
@@ -37,6 +38,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
         sisacuti: N,
         sisacutiN1: N1,
         sisacutiN2: N2,
+        cutiBersama: cutiBersama,
       });
     } catch (error) {
       console.error("Failed to update sisa cuti:", error);
@@ -45,19 +47,54 @@ const FormPengajuanCuti = ({ setFormData }) => {
 
   // Daftar tanggal merah atau hari libur
   const tanggalMerah = [
-    //Juni
+    // 2024
+    // Juni
     "2024-06-17",
     "2024-06-18",
-    //Juli
+    // Juli
     "2024-07-07",
-    //Agustus
+    // Agustus
     "2024-08-17",
     "2024-08-18",
-    //September
+    // September
     "2024-09-16",
-    //Desember
+    // Desember
     "2024-12-25",
     "2024-12-26",
+
+    // 2025
+    // Januari
+    "2025-01-01", // Tahun Baru Masehi
+    "2025-01-27", // Isra Mi'raj Nabi Muhammad SAW
+    "2025-01-29", // Tahun Baru Imlek
+
+    // Maret
+    "2025-03-29", // Hari Raya Nyepi
+    "2025-03-31", // Hari Raya Idul Fitri
+
+    // April
+    "2025-04-01", // Cuti Bersama Lebaran
+    "2025-04-18", // Jumat Agung
+
+    // Mei
+    "2025-05-01", // Hari Buruh Internasional
+    "2025-05-12", // Hari Raya Waisak
+    "2025-05-29", // Kenaikan Isa Almasih
+
+    // Juni
+    "2025-06-01", // Hari Lahir Pancasila
+    "2025-06-07", // Hari Raya Idul Adha
+    "2025-06-27", // Tahun Baru Islam
+
+    // Agustus
+    "2025-08-17", // Hari Kemerdekaan RI
+
+    // September
+    "2025-09-05", // Maulid Nabi Muhammad SAW
+
+    // Desember
+    "2025-12-25", // Hari Raya Natal
+    "2025-12-26", // Cuti Bersama Natal
   ];
 
   const [editableLeaveDays, setEditableLeaveDays] = useState("");
@@ -139,6 +176,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
       let newRemainingAnnualLeave = jumlahCutiTahunan;
       let newN1 = N1;
       let newN2 = N2;
+      let cutiBersama = user && user.cutiBersama;
       let lamanyacuti = parseInt(formData.leaveDays);
 
       if (formData.leaveType === "Cuti Tahunan") {
@@ -165,25 +203,53 @@ const FormPengajuanCuti = ({ setFormData }) => {
         if (lamanyacuti > 0 && newRemainingAnnualLeave > 0) {
           newRemainingAnnualLeave -= lamanyacuti;
           if (newRemainingAnnualLeave < 0) {
-            alert(
-              "Jumlah cuti yang diambil melebihi jumlah cuti tahunan yang tersisa."
-            );
-            return;
+            lamanyacuti = -newRemainingAnnualLeave;
+            newRemainingAnnualLeave = 0;
+          } else {
+            lamanyacuti = 0;
           }
         }
 
-        if (newN2 === 0 && newN1 === 0 && newRemainingAnnualLeave <= 0) {
+        // Mengurangi cuti bersama jika masih ada sisa cuti yang perlu dikurangi
+        if (lamanyacuti > 0 && cutiBersama > 0) {
+          cutiBersama -= lamanyacuti;
+          if (cutiBersama < 0) {
+            alert(
+              "Jumlah cuti yang diambil melebihi jumlah cuti bersama yang tersisa."
+            );
+            return;
+          } else {
+            lamanyacuti = 0; // Set lamanyacuti to 0 if it's completely covered by cutiBersama
+          }
+        }
+
+        if (
+          newN2 === 0 &&
+          newN1 === 0 &&
+          newRemainingAnnualLeave === 0 &&
+          cutiBersama <= 0
+        ) {
           alert("Tidak ada cuti yang tersisa.");
           return;
         }
       }
-      updateSisaCuti(user.uuid, newRemainingAnnualLeave, newN1, newN2);
+
+      updateSisaCuti(
+        user.uuid,
+        newRemainingAnnualLeave,
+        newN1,
+        newN2,
+        cutiBersama
+      );
+
       setFormData({
         ...formData,
         remainingAnnualLeave: newRemainingAnnualLeave,
         sisacutiN1: newN1,
         sisacutiN2: newN2,
+        cutiBersama: cutiBersama,
       });
+
       navigate("/tampilkan-data-cuti", {
         state: {
           formData: {
@@ -191,6 +257,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
             remainingAnnualLeave: newRemainingAnnualLeave,
             sisacutiN1: newN1,
             sisacutiN2: newN2,
+            cutiBersama: cutiBersama,
           },
         },
       });
@@ -234,13 +301,20 @@ const FormPengajuanCuti = ({ setFormData }) => {
                   {user && user.sisacutiN2} Hari
                 </span>
               </li>
+              <li>
+                Cuti Bersama:
+                <span className="font-bold text-lg ml-2">
+                  {user && user.cutiBersama} Hari
+                </span>
+              </li>
             </ul>
             <p>
               Jadi, total Cuti Tahunan yang dapat Anda nikmati adalah:
               <span className="font-bold text-lg ml-2">
                 {jumlahCutiTahunan +
                   (user ? user.sisacutiN1 : 0) +
-                  (user ? user.sisacutiN2 : 0)}{" "}
+                  (user ? user.sisacutiN2 : 0) +
+                  (user ? user.cutiBersama : 0)}{" "}
                 Hari
               </span>
             </p>

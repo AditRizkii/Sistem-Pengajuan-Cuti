@@ -99,10 +99,34 @@ const DetailPengajuanCuti = () => {
               </tr>
               <tr className="mb-2">
                 <td className="text-lg font-semibold pl-20">
-                  Sisa Cuti Tahunan
+                  Sisa Cuti Tahunan (N)
                 </td>
                 <td className="text-lg font-normal">
                   : {user && user.sisacuti}
+                </td>
+              </tr>
+              <tr className="mb-2">
+                <td className="text-lg font-semibold pl-20">
+                  Sisa Cuti (N - 1)
+                </td>
+                <td className="text-lg font-normal">
+                  : {user && user.sisacutiN1}
+                </td>
+              </tr>
+              <tr className="mb-2">
+                <td className="text-lg font-semibold pl-20">
+                  Sisa Cuti (N - 2)
+                </td>
+                <td className="text-lg font-normal">
+                  : {user && user.sisacutiN2}
+                </td>
+              </tr>
+              <tr className="mb-2">
+                <td className="text-lg font-semibold pl-20">
+                  Sisa Cuti Bersama
+                </td>
+                <td className="text-lg font-normal">
+                  : {user && user.cutiBersama}
                 </td>
               </tr>
             </tbody>
