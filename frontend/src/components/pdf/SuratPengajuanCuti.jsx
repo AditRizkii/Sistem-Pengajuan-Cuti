@@ -576,7 +576,7 @@ const SuratPengajuanCuti = ({ formData, user }) => {
                   <Text style={styles.tableRowLabel5}>N</Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>
-                    {user && user.sisacuti} Hari
+                    {user ? user.sisacuti + (user.cutiBersama || 0) : 0} Hari
                   </Text>
                   <View style={styles.tableRowDivider} />
                   <Text style={styles.tableRowValue5}>

@@ -16,12 +16,13 @@ export const Login = async (req, res) => {
   const email = user.email;
   const role = user.role;
   const nip = user.nip;
+  const cutiBersama = user.cutiBersama;
   const sisacuti = user.sisacuti;
   const sisacutiN1 = user.sisacutiN1;
   const sisacutiN2 = user.sisacutiN2;
   res
     .status(200)
-    .json({ uuid, name, email, role, nip, sisacuti, sisacutiN1, sisacutiN2 });
+    .json({ uuid, name, email, role, nip, cutiBersama, sisacuti, sisacutiN1, sisacutiN2 });
 };
 
 export const Me = async (req, res) => {
@@ -35,6 +36,7 @@ export const Me = async (req, res) => {
       "email",
       "role",
       "nip",
+      "cutiBersama",
       "sisacuti",
       "sisacutiN1",
       "sisacutiN2",

@@ -5,6 +5,7 @@ import axios from "axios";
 const FormEditUser = () => {
   const [name, setName] = useState("");
   const [nip, setNIP] = useState("");
+  const [cutiBersama, setCutiBersama] = useState(0);
   const [sisacuti, setSisaCuti] = useState(0);
   const [sisacuti1, setSisaCuti1] = useState(0);
   const [sisacuti2, setSisaCuti2] = useState(0);
@@ -22,6 +23,7 @@ const FormEditUser = () => {
         const response = await axios.get(`http://localhost:5000/users/${id}`);
         setName(response.data.name);
         setNIP(response.data.nip);
+        setCutiBersama(response.data.cutiBersama);
         setSisaCuti(response.data.sisacuti);
         setSisaCuti1(response.data.sisacutiN1);
         setSisaCuti2(response.data.sisacutiN2);
@@ -43,6 +45,7 @@ const FormEditUser = () => {
         name: name,
         email: email,
         nip: nip,
+        cutiBersama: cutiBersama,
         sisacuti: sisacuti,
         sisacutiN1: sisacuti1,
         sisacutiN2: sisacuti2,
@@ -103,6 +106,21 @@ const FormEditUser = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Cuti Bersama</label>
+                <div className="control">
+                  <input
+                    type="number"
+                    min={0}
+                    className="input"
+                    value={cutiBersama}
+                    onChange={(e) => {
+                      setCutiBersama(e.target.value);
+                    }}
+                    placeholder="Cuti Bersama"
                   />
                 </div>
               </div>
