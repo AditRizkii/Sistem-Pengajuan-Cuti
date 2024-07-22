@@ -1,0 +1,11 @@
+{
+  "name": "sistem-pengajuan-cuti",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"nodemon backend\" \"npm start --prefix frontend\""
+  },
+  "author": "",
+  "license": "ISC"
+}

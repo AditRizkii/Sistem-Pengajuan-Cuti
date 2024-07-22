@@ -24,7 +24,7 @@ const store = new sessionStore({
 });
 
 // (async () => {
-//     await db.sync();
+//   await db.sync();
 // })();
 
 app.use(
