@@ -143,13 +143,11 @@ const FormPengajuanCuti = ({ setFormData }) => {
     const end = new Date(endDate);
     let count = 0;
 
-    // Loop melalui setiap hari di rentang tanggal
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      // Periksa apakah hari tersebut bukan hari libur
       if (
         d.getDay() !== 0 && // Minggu
         d.getDay() !== 6 && // Sabtu
-        !tanggalMerah.includes(d.toISOString().split("T")[0]) // Tanggal merah
+        !tanggalMerah.includes(d.toISOString().split("T")[0])
       ) {
         count++;
       }
@@ -180,60 +178,63 @@ const FormPengajuanCuti = ({ setFormData }) => {
       let lamanyacuti = parseInt(formData.leaveDays);
 
       if (formData.leaveType === "Cuti Tahunan") {
-        if (newN2 > 0) {
-          newN2 -= lamanyacuti;
-          if (newN2 < 0) {
-            lamanyacuti = -newN2;
+        // Prioritas pertama: Cuti Bersama
+        if (cutiBersama > 0) {
+          if (cutiBersama >= lamanyacuti) {
+            cutiBersama -= lamanyacuti;
+            lamanyacuti = 0;
+          } else {
+            lamanyacuti -= cutiBersama;
+            cutiBersama = 0;
+          }
+        }
+
+        // Prioritas kedua: Cuti Dua Tahun Lalu (N-2)
+        if (lamanyacuti > 0 && newN2 > 0) {
+          if (newN2 >= lamanyacuti) {
+            newN2 -= lamanyacuti;
+            lamanyacuti = 0;
+          } else {
+            lamanyacuti -= newN2;
             newN2 = 0;
-          } else {
-            lamanyacuti = 0;
           }
         }
 
+        // Prioritas ketiga: Cuti Satu Tahun Lalu (N-1)
         if (lamanyacuti > 0 && newN1 > 0) {
-          newN1 -= lamanyacuti;
-          if (newN1 < 0) {
-            lamanyacuti = -newN1;
+          if (newN1 >= lamanyacuti) {
+            newN1 -= lamanyacuti;
+            lamanyacuti = 0;
+          } else {
+            lamanyacuti -= newN1;
             newN1 = 0;
-          } else {
-            lamanyacuti = 0;
           }
         }
 
+        // Prioritas terakhir: Cuti Tahunan (Tahun Ini)
         if (lamanyacuti > 0 && newRemainingAnnualLeave > 0) {
-          newRemainingAnnualLeave -= lamanyacuti;
-          if (newRemainingAnnualLeave < 0) {
-            lamanyacuti = -newRemainingAnnualLeave;
-            newRemainingAnnualLeave = 0;
-          } else {
+          if (newRemainingAnnualLeave >= lamanyacuti) {
+            newRemainingAnnualLeave -= lamanyacuti;
             lamanyacuti = 0;
-          }
-        }
-
-        // Mengurangi cuti bersama jika masih ada sisa cuti yang perlu dikurangi
-        if (lamanyacuti > 0 && cutiBersama > 0) {
-          cutiBersama -= lamanyacuti;
-          if (cutiBersama < 0) {
-            alert(
-              "Jumlah cuti yang diambil melebihi jumlah cuti bersama yang tersisa."
-            );
-            return;
           } else {
-            lamanyacuti = 0; // Set lamanyacuti to 0 if it's completely covered by cutiBersama
+            lamanyacuti -= newRemainingAnnualLeave;
+            newRemainingAnnualLeave = 0;
           }
         }
 
         if (
+          lamanyacuti > 0 &&
+          cutiBersama === 0 &&
           newN2 === 0 &&
           newN1 === 0 &&
-          newRemainingAnnualLeave === 0 &&
-          cutiBersama <= 0
+          newRemainingAnnualLeave === 0
         ) {
-          alert("Tidak ada cuti yang tersisa.");
+          alert("Jumlah cuti yang diambil melebihi jumlah cuti yang tersisa.");
           return;
         }
       }
 
+      // Update sisa cuti di database
       updateSisaCuti(
         user.uuid,
         newRemainingAnnualLeave,
@@ -242,6 +243,7 @@ const FormPengajuanCuti = ({ setFormData }) => {
         cutiBersama
       );
 
+      // Set data form yang sudah diperbarui
       setFormData({
         ...formData,
         remainingAnnualLeave: newRemainingAnnualLeave,
